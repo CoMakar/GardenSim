@@ -27,10 +27,10 @@ $ pyinstaller main.spec
 
 ## Examples
 
-![](.\examples\normal_view.png)
+<img src="examples\normal_view.png" style="border-radius: 4px">
 -------------------------------
-![](.\examples\energy_view.png)
+<img src="examples\id_view.png" style="border-radius: 4px">
 -------------------------------
-![](.\examples\id_view.png)
+<img src="examples\energy_view.png" style="border-radius: 4px">
 -------------------------------
-![](.\examples\shadow_view.png)
+<img src="examples\shadow_view.png" style="border-radius: 4px">
