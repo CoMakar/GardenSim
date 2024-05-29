@@ -28,9 +28,15 @@ $ pyinstaller main.spec
 ## Examples
 
 <img src="examples\normal_view.png" style="border-radius: 4px">
+
 -------------------------------
+
 <img src="examples\id_view.png" style="border-radius: 4px">
+
 -------------------------------
+
 <img src="examples\energy_view.png" style="border-radius: 4px">
+
 -------------------------------
+
 <img src="examples\shadow_view.png" style="border-radius: 4px">
