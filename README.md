@@ -24,3 +24,13 @@ $ pipenv install --dev
 $ pyinstaller main.spec
 # ----------------------------
 ```
+
+## Examples
+
+![](.\examples\normal_view.png)
+-------------------------------
+![](.\examples\energy_view.png)
+-------------------------------
+![](.\examples\id_view.png)
+-------------------------------
+![](.\examples\shadow_view.png)
