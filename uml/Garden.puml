@@ -1,0 +1,136 @@
+@startuml Garden
+set namespaceSeparator none
+skinparam linetype polyline
+skinparam linetype ortho
+class "Bulb" as src.simulation.cell.Bulb {
+  __ENERGY_TO_GROW
+  __IMAGES
+  __POS_DELTAS
+  __energy : int
+  __genome
+  _energy_consumption : int
+  _energy_gain : int
+  __genome
+  _image : Image
+  copy_of_genome
+  energy
+  consume_energy()
+  produce_energy(multiplier: int)
+  update(x: int, y: int)
+}
+class "Cell" as src.simulation.cell.Cell {
+  _energy_consumption : int
+  _energy_gain : int
+  _garden : str
+  _image : Image
+  _plant : str
+  garden
+  image
+  plant
+  {abstract}consume_energy()
+  {abstract}produce_energy(multiplier: int)
+  {abstract}update(x: int, y: int)
+}
+class "Chromosome" as src.simulation.genome.Chromosome {
+  __genes : List[Gene]
+  genes
+  size
+  copy()
+  mutate(deviation_range: Tuple[int, int])
+}
+class "Garden" as src.simulation.garden.Garden {
+  TILE_SIZE
+  __CHROMOSOME_LENGTH
+    ...
+  __USES_ENERGY
+  __border_color : int
+  __grid : npt.NDArray[Union[Cell, None]]
+  __plants : set
+  has_plants
+  size
+  __tile_x(x)
+  add_plant(plant: Plant)
+  draw_border(position: Vec2)
+  draw_energy(position: Vec2)
+  draw_plants(position: Vec2)
+  draw_plants_id(position: Vec2)
+  draw_shadow(position: Vec2)
+  get_cell(x: int, y: int)
+  is_available(x: int, y: int)
+  is_within(x: int, y: int)
+  place_cell(cell: Cell, x: int, y: int)
+  remove_cell(x: int, y: int)
+  replace_cell(cell: Cell, x: int, y: int)
+  update()
+  update_cells()
+  update_dead_plants()
+  update_energy()
+  update_plants_age()
+}
+class "Gene" as src.simulation.genome.Gene {
+  ACTIVE_CHANCE
+  __active : bool
+  __dna : int
+  active
+  dna
+  copy()
+  mutate(deviation_range: Tuple[int, int])
+}
+class "Genome" as src.simulation.genome.Genome {
+  __active_chromosome : int
+  __chromosomes : List[Chromosome]
+  chromosome
+  chromosomes
+  size
+  copy()
+  mutate(deviation_range: Tuple[int, int])
+  random(size: int, chromosome_length: int)
+  set_active_gene(index: int)
+}
+class "Plant" as src.simulation.garden.Plant {
+  __ENERGY_PER_CELL
+  __MAX_AGE
+  __age : int
+  __alive : bool
+  __energy : int
+  __energy_capacity : int
+  alive
+  energy
+  add_energy(amount: int)
+  check_alive()
+  increase_capacity()
+  take_energy(amount: int)
+  update_age()
+}
+class "Seed" as src.simulation.cell.Seed {
+  __IMAGE
+  __energy : int
+  __genome
+  _image : Image
+  energy
+  {abstract}consume_energy()
+  {abstract}produce_energy(multiplier: int)
+  update(x: int, y: int)
+}
+class "Stem" as src.simulation.cell.Stem {
+  __IMAGES
+  _energy_consumption : int
+  _energy_gain : int
+  __genome
+  _image : Image
+  consume_energy()
+  produce_energy(multiplier: int)
+  {abstract}update(x: int, y: int)
+}
+src.simulation.cell.Bulb --|> src.simulation.cell.Cell
+src.simulation.cell.Seed --|> src.simulation.cell.Cell
+src.simulation.cell.Stem --|> src.simulation.cell.Cell
+src.simulation.genome.Gene "0..* " --o "1 " src.simulation.genome.Chromosome : __genes
+src.simulation.genome.Chromosome "0..* " ---o "1 " src.simulation.genome.Genome : __chromosomes
+src.simulation.genome.Genome "1 " --o "1   " src.simulation.cell.Bulb : __genome
+src.simulation.genome.Genome "1   " --o "1 " src.simulation.cell.Seed : __genome
+src.simulation.garden.Plant "0..*     " --o "1  " src.simulation.garden.Garden : __plants
+src.simulation.cell.Cell "0..* " --o "1  " src.simulation.garden.Garden : __grid
+src.simulation.garden.Plant "0..1" --o "1  " src.simulation.cell.Cell : __plant
+src.simulation.garden.Garden "0..1 " ---o "1   " src.simulation.cell.Cell : __garden
+@enduml

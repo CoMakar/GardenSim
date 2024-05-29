@@ -1,0 +1,111 @@
+@startuml App
+set namespaceSeparator none
+skinparam linetype polyline
+skinparam linetype ortho
+class "main.App" as main.App {
+  __FPS : int
+  __GARDEN_BORDER
+  __GARDEN_POSITION
+  __GARDEN_SIZE
+  __HEIGHT : int
+  __WIDTH : int
+  active : bool
+  garden_draw_mode
+  garden_draw_mode_names : dict
+  garden_draw_modes : deque
+  l_help
+  l_mode
+  l_size
+  larrow
+  rarrow
+  w_garden
+  draw()
+  reset_garden()
+  run()
+  switch_render_mode()
+  toggle_pause()
+  update()
+}
+class "src.helper.vec.Vec2" as src.helper.vec.Vec2 {
+  as_tuple
+  length
+  normalized
+  x
+  y
+  __is_scalar(other: Any)
+  __is_vector(other: Any)
+}
+class "src.simulation.garden.Garden" as src.simulation.garden.Garden {
+  TILE_SIZE
+  __CHROMOSOME_LENGTH
+  __DENSITY_FACTOR
+  __ENERGY_COLORS
+  __GENOME_SIZE
+  __HAS_PLANT
+  __ID_COLORS
+  __INITIAL_ENERGY
+  __MUTATION_CHANCE
+  __MUTATION_RATE
+  __SHADOW_COLORS
+  __SUN_LEVEL
+  __UPDATABLE
+  __USES_ENERGY
+  __border_color : int
+  __grid : npt.NDArray[Union[Cell, None]]
+  __plants : set
+  has_plants
+  size
+  __tile_x(x)
+  add_plant(plant: Plant)
+  draw_border(position: Vec2)
+  draw_energy(position: Vec2)
+  draw_plants(position: Vec2)
+  draw_plants_id(position: Vec2)
+  draw_shadow(position: Vec2)
+  get_cell(x: int, y: int)
+  is_available(x: int, y: int)
+  is_within(x: int, y: int)
+  place_cell(cell: Cell, x: int, y: int)
+  remove_cell(x: int, y: int)
+  replace_cell(cell: Cell, x: int, y: int)
+  update()
+  update_cells()
+  update_dead_plants()
+  update_energy()
+  update_plants_age()
+}
+class "src.widgets.garden_widget.GardenWidget" as src.widgets.garden_widget.GardenWidget {
+  __garden
+  __position
+  garden
+  position
+  size
+  draw(draw_mode: Union[Literal['draw_plants', 'draw_plants_id', 'draw_shadow', 'draw_energy'], str])
+  update()
+}
+class "src.widgets.image.Image" as src.widgets.image.Image {
+  __bank : Union[int, px.Image]
+  __size
+  __transparency_key : Optional[Union[int, None]]
+  __uv
+  draw(x: Number, y: Number)
+}
+class "src.widgets.label.Label" as src.widgets.label.Label {
+  __color : int
+  __lines : List[str], list
+  __position
+  __relative_to : NoneType
+  __visible : bool
+  add_line(line: str)
+  clear()
+  draw()
+  set_text(text: str)
+}
+src.helper.vec.Vec2 "2 " --* "1   " src.widgets.image.Image : __size\n__uv
+src.simulation.garden.Garden "1 " --* "1 " src.widgets.garden_widget.GardenWidget : garden
+src.widgets.garden_widget.GardenWidget "1 " --* "1 " main.App : w_garden
+src.widgets.image.Image "2 " ---* "1 " main.App : larrow\nrarrow
+src.widgets.label.Label "3 " ----* "1  " main.App : l_mode\nl_help\nl_size
+src.helper.vec.Vec2 "1 " --o "1 " src.widgets.garden_widget.GardenWidget : __position
+src.helper.vec.Vec2 "1   " --o "1 " src.widgets.label.Label : __position
+@enduml
