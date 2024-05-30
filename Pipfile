@@ -7,7 +7,6 @@ name = "pypi"
 pyxel = "*"
 numpy = "*"
 loguru = "*"
-pyinstaller = "*"
 python-dotenv = "*"
 
 [dev-packages]
